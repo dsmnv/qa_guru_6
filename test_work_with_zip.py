@@ -3,6 +3,7 @@ import os
 import shutil
 import csv
 from PyPDF2 import PdfReader
+import xlrd
 
 
 zip_path = 'resources/file.zip'
@@ -14,6 +15,8 @@ def create_zip():
     newzip.write('PDF.pdf')
     newzip.write('XLS.xls')
     newzip.write('XLSX.xlsx')
+    newzip.write('TXT.txt')
+    newzip.write('donut.png')
     newzip.close()
 
 
@@ -37,7 +40,6 @@ extract_zip()
 
 def test_read_csv():
     with open('resources/CSV.csv') as csv_file:
-        data = ''
         table = csv.reader(csv_file)
         for line_number, line in enumerate(table, 1):
             if line_number == 3:
@@ -56,7 +58,41 @@ def test_read_pdf():
     assert 'Пример PDF файла' in text
 
 
+def test_read_xls():
+    xls_file = xlrd.open_workbook_xls('resources/XLS.xls')
+    xls_sheet = xls_file.sheet_by_index(0)
+    xls_cell_value = xls_sheet.cell_value(rowx=0, colx=1)
+    xls_row_value = xls_sheet.row_values(rowx=1, start_colx=0)
+    xls_column_value = xls_sheet.col_values(colx=1)
+    print(xls_cell_value)
+    print(xls_row_value)
+    print(xls_column_value)
+    assert xls_cell_value == 'First Name'
+    assert xls_row_value == [1.0, 'Dulce', 'Abril', 'Female', 'United States', 32.0, '15/10/2017', 1562.0]
+    assert xls_column_value == ['First Name', 'Dulce', 'Mara', 'Philip', 'Kathleen', 'Nereida', 'Gaston', 'Etta', 'Earlean', 'Vincenza']
+
+
+def test_read_xlsx():
+    xlsx_file = xlrd.open_workbook('resources/XLS.xls')
+    xlsx_sheet = xlsx_file.sheet_by_index(0)
+    xlsx_row_value = xlsx_sheet.row_values(rowx=3, start_colx=0)
+    assert xlsx_row_value == [3.0, 'Philip', 'Gent', 'Male', 'France', 36.0, '21/05/2015', 2587.0]
+
+
+def test_read_txt():
+    with open('resources/TXT.txt') as txt_file:
+        txt_data = txt_file.read()
+        print(txt_data)
+        assert 'Test tetete\n2nd row' in txt_data
+
+
+def test_png_size():
+    png_size = os.path.getsize('resources/donut.png')
+    assert png_size == 50194
+
+
 def test_clean_resources():
     shutil.rmtree('resources')
+
 
 
