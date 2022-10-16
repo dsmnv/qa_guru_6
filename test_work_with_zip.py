@@ -72,13 +72,6 @@ def test_read_xls():
     assert xls_column_value == ['First Name', 'Dulce', 'Mara', 'Philip', 'Kathleen', 'Nereida', 'Gaston', 'Etta', 'Earlean', 'Vincenza']
 
 
-def test_read_xlsx():
-    xlsx_file = xlrd.open_workbook('resources/XLS.xls')
-    xlsx_sheet = xlsx_file.sheet_by_index(0)
-    xlsx_row_value = xlsx_sheet.row_values(rowx=3, start_colx=0)
-    assert xlsx_row_value == [3.0, 'Philip', 'Gent', 'Male', 'France', 36.0, '21/05/2015', 2587.0]
-
-
 def test_read_txt():
     with open('resources/TXT.txt') as txt_file:
         txt_data = txt_file.read()
