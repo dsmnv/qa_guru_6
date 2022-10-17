@@ -48,7 +48,6 @@ def test_read_csv():
         assert ("['2;Dima;dima@gmail.com']") == data
 
 
-
 def test_read_pdf():
     pdf_file = 'resources/PDF.pdf'
     pdf_file_data = PdfReader(pdf_file)
